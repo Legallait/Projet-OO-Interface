@@ -1,4 +1,4 @@
-# CinéClic — Projet OO Systems Development
+# CinéClic : Projet OO Systems Development
 
 CinéClic est une application Vue.js pour rechercher des films et construire sa bibliothèque personnelle :
 films à voir, films vus et favoris, sauvegardés dans le navigateur.
