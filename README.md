@@ -1,9 +1,19 @@
+<div align="center">
+
 # CinéClic : Projet OO Systems Development
+<img src="./src/assets/logo.png" alt="One More Time" width="240" />
 
 CinéClic est une application Vue.js pour rechercher des films et construire sa bibliothèque personnelle :
 films à voir, films vus et favoris, sauvegardés dans le navigateur.
 
+
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
+![Vue](https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D)
+
+
 Parcours principal : **Recherche -> Résultats -> Ajout -> Bibliothèque**.
+
+</div>
 
 ## API utilisée : TMDB (The Movie Database)
 

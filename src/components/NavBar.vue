@@ -1,7 +1,7 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
-import { useStore } from 'vuex'
-import { useRoute, useRouter } from 'vue-router'
+import {computed, ref, watch} from 'vue'
+import {useStore} from 'vuex'
+import {useRoute, useRouter} from 'vue-router'
 
 const store = useStore()
 const route = useRoute()
@@ -17,10 +17,10 @@ function logout() {
 }
 
 const links = [
-  { to: '/', name: 'recherche', label: 'Recherche' },
-  { to: '/resultats', name: 'resultats', label: 'Résultats' },
-  { to: '/library', name: 'bibliotheque', label: 'Ma bibliothèque' },
-  { to: '/favorites', name: 'favoris', label: 'Favoris' },
+  {to: '/', name: 'recherche', label: 'Recherche'},
+  {to: '/resultats', name: 'resultats', label: 'Résultats'},
+  {to: '/library', name: 'bibliotheque', label: 'Ma bibliothèque'},
+  {to: '/favorites', name: 'favoris', label: 'Favoris'},
 ]
 
 const filmCount = computed(() => store.getters.libraryCount)
@@ -29,15 +29,15 @@ const filmCount = computed(() => store.getters.libraryCount)
 <template>
   <header class="navbar">
     <RouterLink to="/" class="brand">
-      <span class="badge">N°1</span>
+      <img class="logo" src="../assets/logo.png" alt="logo"/>
       CinéClic
     </RouterLink>
 
     <button
-      class="burger"
-      :aria-expanded="menuOpen"
-      aria-label="Menu"
-      @click="menuOpen = !menuOpen"
+        class="burger"
+        :aria-expanded="menuOpen"
+        aria-label="Menu"
+        @click="menuOpen = !menuOpen"
     >
       <span></span>
       <span></span>
@@ -47,10 +47,10 @@ const filmCount = computed(() => store.getters.libraryCount)
     <div class="menu" :class="{ open: menuOpen }">
       <nav class="links">
         <RouterLink
-          v-for="link in links"
-          :key="link.to"
-          :to="link.to"
-          :class="{ active: route.name === link.name }"
+            v-for="link in links"
+            :key="link.to"
+            :to="link.to"
+            :class="{ active: route.name === link.name }"
         >
           {{ link.label }}
         </RouterLink>
@@ -77,6 +77,14 @@ const filmCount = computed(() => store.getters.libraryCount)
   gap: 16px;
   padding: 16px 40px;
   background: var(--cream);
+}
+
+.logo {
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
 
 a {
