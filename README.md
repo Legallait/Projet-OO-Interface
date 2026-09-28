@@ -113,7 +113,7 @@ src/
 
 ## Figma
 
-Prototype : _lien à ajouter_
+Prototype : https://www.figma.com/design/1hUiMPfeDv402sT5XZB65O/Projet-OO?node-id=0-1&t=QJ7QtWxUWJkwyQmy-1
 
 ## Auteurs
 
