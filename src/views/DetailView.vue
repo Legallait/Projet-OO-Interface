@@ -466,4 +466,80 @@ h2 {
 .similar-card span {
   color: var(--gold);
 }
+
+@media (max-width: 600px) {
+  .page {
+    padding: 24px 16px 40px;
+  }
+
+  .detail {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .poster {
+    flex: none;
+    align-self: center;
+    width: min(240px, 70%);
+    padding: 8px;
+    border-width: 4px;
+  }
+
+  .content {
+    min-width: 0;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .infos div {
+    padding: 8px 0;
+  }
+
+  /* Boutons pleine largeur, faciles à toucher */
+  .actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .library,
+  .actions button {
+    width: 100%;
+  }
+
+  h2 {
+    margin-top: 40px;
+    font-size: 1.3rem;
+  }
+
+  /* Casting en bandeau qu'on fait défiler du doigt */
+  .cast {
+    display: flex;
+    gap: 16px;
+    margin: 0 -16px;
+    padding: 0 16px 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .cast li {
+    flex: 0 0 96px;
+    scroll-snap-align: start;
+  }
+
+  .cast img,
+  .avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .cast strong {
+    font-size: 0.85rem;
+  }
+
+  .character {
+    font-size: 0.75rem;
+  }
+}
 </style>

@@ -207,4 +207,33 @@ h2 {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 24px;
 }
+
+@media (max-width: 600px) {
+  .page {
+    padding: 24px 16px 40px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  h2 {
+    margin-top: 32px;
+  }
+
+  .genres {
+    gap: 8px;
+  }
+
+  .genres button {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* 2 cards par ligne sur téléphone */
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
 </style>

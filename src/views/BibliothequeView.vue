@@ -538,4 +538,92 @@ svg {
   stroke: currentColor;
   stroke-width: 2;
 }
+
+@media (max-width: 600px) {
+  .banner {
+    gap: 24px;
+    padding: 24px 16px;
+    border-block-width: 6px;
+  }
+
+  h1 {
+    margin-bottom: 16px;
+    font-size: 1.6rem;
+  }
+
+  .stats {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .stats div {
+    flex: 1;
+    width: auto;
+  }
+
+  .page {
+    padding: 20px 16px 40px;
+  }
+
+  .toolbar {
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  /* Les 4 onglets tiennent sur une seule ligne */
+  .tabs {
+    flex-wrap: nowrap;
+    width: 100%;
+    gap: 6px;
+  }
+
+  .tabs a {
+    flex: 1;
+    padding: 8px 4px;
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  .controls {
+    width: 100%;
+    flex-wrap: nowrap;
+  }
+
+  .controls input {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+  }
+
+  .note {
+    margin: -8px 0 16px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  h2 {
+    font-size: 0.85rem;
+  }
+
+  .info {
+    padding: 10px;
+  }
+
+  .meta {
+    font-size: 0.75rem;
+  }
+
+  .actions {
+    gap: 6px;
+    padding: 8px 10px;
+  }
+
+  .actions button {
+    width: 32px;
+    height: 32px;
+  }
+}
 </style>

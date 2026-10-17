@@ -225,4 +225,39 @@ h2 {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+@media (max-width: 600px) {
+  .info {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 0.85rem;
+  }
+
+  .director {
+    padding-top: 8px;
+  }
+
+  .label {
+    font-size: 0.6rem;
+  }
+
+  .name {
+    font-size: 0.8rem;
+  }
+
+  .year {
+    top: 6px;
+    right: 6px;
+    font-size: 0.7rem;
+  }
+
+  .add {
+    top: 6px;
+    left: 6px;
+    height: 28px;
+  }
+}
 </style>
