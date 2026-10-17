@@ -41,6 +41,16 @@ export async function discoverByGenre(genreId) {
   return data.results.map(toFilm)
 }
 
+export async function withDirectors(films) {
+  return Promise.all(
+    films.map(async (film) => {
+      const credits = await request(`/movie/${film.id}/credits`).catch(() => null)
+      const director = credits?.crew.find((person) => person.job === 'Director')?.name || 'Inconnu'
+      return { ...film, director }
+    }),
+  )
+}
+
 export async function getFilm(id) {
   const movie = await request(`/movie/${id}`, { append_to_response: 'credits' })
   return {

@@ -1,7 +1,7 @@
 <script setup>
 import {computed, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
-import {searchFilms, discoverByGenre, GENRES} from '../services/tmdb'
+import {searchFilms, discoverByGenre, withDirectors, GENRES} from '../services/tmdb'
 import FilmCard from '../components/FilmCard.vue'
 import SearchBar from '../components/SearchBar.vue'
 
@@ -28,7 +28,8 @@ async function load() {
 
   loading.value = true
   try {
-    films.value = q ? await searchFilms(q) : await discoverByGenre(genre)
+    const results = q ? await searchFilms(q) : await discoverByGenre(genre)
+    films.value = await withDirectors(results)
   } catch (e) {
     error.value = e.message
   } finally {
