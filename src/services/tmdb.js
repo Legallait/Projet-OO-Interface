@@ -1,6 +1,8 @@
 const API_URL = 'https://api.themoviedb.org/3'
 const API_KEY = import.meta.env.VITE_API_KEY_TMDB
 const IMAGE_URL = 'https://image.tmdb.org/t/p/w500'
+const BACKDROP_URL = 'https://image.tmdb.org/t/p/w1280'
+const PROFILE_URL = 'https://image.tmdb.org/t/p/w185'
 
 export const GENRES = [
   { id: 18, label: 'Drame' },
@@ -60,6 +62,15 @@ export async function getFilm(id) {
     runtime: movie.runtime,
     countries: movie.production_countries.map((c) => c.name).join(', '),
     director: movie.credits.crew.find((person) => person.job === 'Director')?.name || 'Inconnu',
+    backdrop: movie.backdrop_path ? BACKDROP_URL + movie.backdrop_path : null,
+    rating: movie.vote_average,
+    votes: movie.vote_count,
+    cast: movie.credits.cast.slice(0, 8).map((person) => ({
+      id: person.id,
+      name: person.name,
+      character: person.character,
+      photo: person.profile_path ? PROFILE_URL + person.profile_path : null,
+    })),
   }
 }
 

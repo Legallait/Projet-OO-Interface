@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { getFilm, getRecommendations } from '../services/tmdb'
@@ -47,6 +47,16 @@ function formatRuntime(minutes) {
   return `${Math.floor(minutes / 60)}h ${String(minutes % 60).padStart(2, '0')}min`
 }
 
+// 7.43 -> "7,4"
+function formatRating(rating) {
+  return rating.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+}
+
+// "Ben Affleck" -> "BA"
+function initials(name) {
+  return name.split(' ').map((part) => part[0]).slice(0, 2).join('')
+}
+
 async function load(id) {
   film.value = null
   showMenu.value = false
@@ -67,6 +77,17 @@ async function load(id) {
 }
 
 watch(() => route.params.id, load, { immediate: true })
+
+// L'image du film remplace le fond du site, sous un voile crème pour garder le texte lisible
+watch(film, (value) => {
+  document.body.style.backgroundImage = value?.backdrop
+    ? `linear-gradient(rgba(244, 236, 223, 0.82), rgba(244, 236, 223, 0.82)), url(${value.backdrop})`
+    : ''
+})
+
+onUnmounted(() => {
+  document.body.style.backgroundImage = ''
+})
 </script>
 
 <template>
@@ -87,6 +108,11 @@ watch(() => route.params.id, load, { immediate: true })
           </div>
 
           <h1>{{ film.title }}</h1>
+          <p v-if="film.votes" class="rating">
+            <span class="stars" :style="{ '--fill': `${film.rating * 10}%` }" aria-hidden="true">★★★★★</span>
+            <strong>{{ formatRating(film.rating) }}</strong>/10
+            <span class="votes">· {{ film.votes.toLocaleString('fr-FR') }} votes</span>
+          </p>
           <p class="overview">{{ film.overview || 'Aucun résumé disponible.' }}</p>
 
           <dl class="infos">
@@ -132,6 +158,18 @@ watch(() => route.params.id, load, { immediate: true })
           </div>
         </div>
       </div>
+
+      <template v-if="film.cast.length">
+        <h2>Casting</h2>
+        <ul class="cast">
+          <li v-for="actor in film.cast" :key="actor.id">
+            <img v-if="actor.photo" :src="actor.photo" :alt="actor.name" loading="lazy" />
+            <span v-else class="avatar">{{ initials(actor.name) }}</span>
+            <strong>{{ actor.name }}</strong>
+            <span v-if="actor.character" class="character">{{ actor.character }}</span>
+          </li>
+        </ul>
+      </template>
 
       <template v-if="recommendations.length">
         <h2>Dans la même veine</h2>
@@ -214,6 +252,33 @@ h1 {
   font-family: var(--display);
   font-size: 2.8rem;
   color: var(--bordeaux);
+}
+
+.rating {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: -4px 0 16px;
+  color: var(--bordeaux);
+}
+
+/* Étoiles remplies au prorata de la note grâce à un dégradé net */
+.stars {
+  margin-right: 4px;
+  background: linear-gradient(90deg, var(--gold) var(--fill), rgba(107, 28, 46, 0.2) var(--fill));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+}
+
+.rating strong {
+  font-size: 1.3rem;
+}
+
+.votes {
+  opacity: 0.7;
 }
 
 .overview {
@@ -317,6 +382,55 @@ h2 {
   font-family: var(--display);
   text-transform: uppercase;
   color: var(--bordeaux);
+}
+
+.cast {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 24px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cast li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.cast img,
+.avatar {
+  width: 96px;
+  height: 96px;
+  margin-bottom: 6px;
+  border: 3px solid var(--gold);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bordeaux);
+  color: var(--gold);
+  font-family: var(--display);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.cast strong {
+  color: var(--bordeaux);
+  font-size: 0.95rem;
+}
+
+.character {
+  font-size: 0.85rem;
+  font-style: italic;
+  opacity: 0.75;
 }
 
 .similar {
