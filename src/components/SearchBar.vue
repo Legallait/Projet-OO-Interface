@@ -23,7 +23,7 @@ function onInput() {
     return
   }
   timer = setTimeout(async () => {
-    const films = await searchFilms(q).catch(() => [])
+    const { films } = await searchFilms(q).catch(() => ({ films: [] }))
     if (q === query.value.trim()) suggestions.value = films.slice(0, 5)
   }, DELAY)
 }

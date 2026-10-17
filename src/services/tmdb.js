@@ -33,14 +33,17 @@ function toFilm(movie) {
   }
 }
 
-export async function searchFilms(query) {
-  const data = await request('/search/movie', { query })
-  return data.results.map(toFilm)
+// Une page de résultats TMDB (20 films) + le nombre total de pages
+function toPage(data) {
+  return { films: data.results.map(toFilm), totalPages: data.total_pages }
 }
 
-export async function discoverByGenre(genreId) {
-  const data = await request('/discover/movie', { with_genres: genreId, sort_by: 'popularity.desc' })
-  return data.results.map(toFilm)
+export async function searchFilms(query, page = 1) {
+  return toPage(await request('/search/movie', { query, page }))
+}
+
+export async function discoverByGenre(genreId, page = 1) {
+  return toPage(await request('/discover/movie', { with_genres: genreId, sort_by: 'popularity.desc', page }))
 }
 
 export async function withDirectors(films) {
