@@ -2,7 +2,7 @@
 import {computed, ref, watch} from 'vue'
 import {useStore} from 'vuex'
 import {useRoute, useRouter} from 'vue-router'
-import LogoutModal from './LogoutModal.vue'
+import ConfirmModal from './ConfirmModal.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -69,7 +69,7 @@ const filmCount = computed(() => store.getters.libraryCount)
       </div>
     </div>
 
-    <LogoutModal
+    <ConfirmModal
         :open="showLogoutModal"
         title="Déconnexion"
         message="Êtes-vous sûr de vouloir vous déconnecter ?"
