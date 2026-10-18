@@ -3,6 +3,7 @@ import { computed, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { getFilm, getRecommendations } from '../services/tmdb'
+import ConfirmModal from '../components/ConfirmModal.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -12,6 +13,8 @@ const recommendations = ref([])
 const loading = ref(false)
 const error = ref('')
 const showMenu = ref(false)
+const showRemoveModal = ref(false)
+const showUnfavoriteModal = ref(false)
 
 const STATUS_LABELS = { toWatch: 'À voir', watched: 'Vu' }
 
@@ -32,13 +35,27 @@ function setStatus(status) {
   showMenu.value = false
 }
 
+// Clic sur « Retirer » : on demande confirmation avant de retirer de la bibliothèque
 function remove() {
-  store.dispatch('removeFilm', film.value.id)
   showMenu.value = false
+  showRemoveModal.value = true
 }
 
+function confirmRemove() {
+  showRemoveModal.value = false
+  store.dispatch('removeFilm', film.value.id)
+}
+
+// Ajout aux favoris direct, retrait avec confirmation
 function toggleFavorite() {
-  if (requireLogin()) store.dispatch('toggleFavorite', film.value)
+  if (!requireLogin()) return
+  if (saved.value?.favorite) showUnfavoriteModal.value = true
+  else store.dispatch('toggleFavorite', film.value)
+}
+
+function confirmUnfavorite() {
+  showUnfavoriteModal.value = false
+  store.dispatch('toggleFavorite', film.value)
 }
 
 // 99 -> "1h 39min"
@@ -60,6 +77,8 @@ function initials(name) {
 async function load(id) {
   film.value = null
   showMenu.value = false
+  showRemoveModal.value = false
+  showUnfavoriteModal.value = false
   recommendations.value = []
   error.value = ''
   if (!id) return
@@ -188,6 +207,26 @@ onUnmounted(() => {
           </RouterLink>
         </div>
       </template>
+
+      <ConfirmModal
+        :open="showRemoveModal"
+        title="Retirer ce film"
+        :message="`Êtes-vous sûr de vouloir retirer « ${film.title} » de votre bibliothèque ?`"
+        confirm-label="Retirer"
+        cancel-label="Annuler"
+        @confirm="confirmRemove"
+        @cancel="showRemoveModal = false"
+      />
+
+      <ConfirmModal
+        :open="showUnfavoriteModal"
+        title="Retirer des favoris"
+        :message="`Êtes-vous sûr de vouloir retirer « ${film.title} » de vos favoris ?`"
+        confirm-label="Retirer"
+        cancel-label="Annuler"
+        @confirm="confirmUnfavorite"
+        @cancel="showUnfavoriteModal = false"
+      />
     </template>
   </section>
 </template>
