@@ -350,8 +350,8 @@ h1 {
   padding: 8px 12px;
   border: 1px solid var(--bordeaux);
   border-radius: 4px;
-  background: white;
-  color: #2a1a1e;
+  background: var(--surface);
+  color: var(--text);
   font: inherit;
   font-size: 0.9rem;
 }

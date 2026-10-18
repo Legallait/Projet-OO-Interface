@@ -97,10 +97,13 @@ async function load(id) {
 
 watch(() => route.params.id, load, { immediate: true })
 
-// L'image du film remplace le fond du site, sous un voile crème pour garder le texte lisible
-watch(film, (value) => {
+// L'image du film remplace le fond du site, sous un voile adapté au thème actif
+watch([film, () => store.state.theme], ([value, theme]) => {
+  const overlay = theme === 'dark'
+    ? 'rgba(32, 36, 42, 0.62)'
+    : 'rgba(244, 236, 223, 0.82)'
   document.body.style.backgroundImage = value?.backdrop
-    ? `linear-gradient(rgba(244, 236, 223, 0.82), rgba(244, 236, 223, 0.82)), url(${value.backdrop})`
+    ? `linear-gradient(${overlay}, ${overlay}), url(${value.backdrop})`
     : ''
 })
 
@@ -329,7 +332,7 @@ h1 {
   padding: 8px 16px;
   border: 1px solid var(--bordeaux);
   border-radius: 6px;
-  background: white;
+  background: var(--surface);
 }
 
 .infos div {
@@ -389,7 +392,7 @@ dd {
   min-width: 100%;
   border: 1px solid var(--bordeaux);
   border-radius: 4px;
-  background: white;
+  background: var(--surface);
 }
 
 .menu button {
@@ -485,7 +488,7 @@ h2 {
   padding: 8px;
   border: 1px solid var(--bordeaux);
   border-radius: 6px;
-  background: white;
+  background: var(--surface);
   color: var(--bordeaux);
   text-decoration: none;
 }
