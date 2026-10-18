@@ -2,16 +2,19 @@
 import {computed, ref, watch} from 'vue'
 import {useStore} from 'vuex'
 import {useRoute, useRouter} from 'vue-router'
+import LogoutModal from './LogoutModal.vue'
 
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
 const currentUser = computed(() => store.state.currentUser)
 const menuOpen = ref(false)
+const showLogoutModal = ref(false)
 
 watch(() => route.fullPath, () => (menuOpen.value = false))
 
-function logout() {
+function confirmLogout() {
+  showLogoutModal.value = false
   store.dispatch('logout')
   router.push('/connexion')
 }
@@ -60,11 +63,21 @@ const filmCount = computed(() => store.getters.libraryCount)
         <span class="count">{{ filmCount }} {{ filmCount > 1 ? 'films' : 'film' }}</span>
         <template v-if="currentUser">
           <span class="user">{{ currentUser }}</span>
-          <button class="logout" @click="logout">Déconnexion</button>
+          <button class="logout" @click="showLogoutModal = true">Déconnexion</button>
         </template>
         <RouterLink v-else to="/connexion" class="login">Connexion</RouterLink>
       </div>
     </div>
+
+    <LogoutModal
+        :open="showLogoutModal"
+        title="Déconnexion"
+        message="Êtes-vous sûr de vouloir vous déconnecter ?"
+        confirm-label="Se déconnecter"
+        cancel-label="Annuler"
+        @confirm="confirmLogout"
+        @cancel="showLogoutModal = false"
+    />
   </header>
 </template>
 
