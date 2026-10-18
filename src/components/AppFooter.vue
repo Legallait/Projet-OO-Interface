@@ -35,7 +35,7 @@
 .footer {
   position: relative;
   padding: 56px 40px;
-  background: var(--bordeaux);
+  background: var(--footer-bg);
   color: var(--cream);
 }
 

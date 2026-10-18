@@ -2,18 +2,26 @@
 import {computed, ref, watch} from 'vue'
 import {useStore} from 'vuex'
 import {useRoute, useRouter} from 'vue-router'
+import ConfirmModal from './ConfirmModal.vue'
 
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
 const currentUser = computed(() => store.state.currentUser)
 const menuOpen = ref(false)
+const showLogoutModal = ref(false)
+const isDarkMode = computed(() => store.state.theme === 'dark')
 
 watch(() => route.fullPath, () => (menuOpen.value = false))
 
-function logout() {
+function confirmLogout() {
+  showLogoutModal.value = false
   store.dispatch('logout')
   router.push('/connexion')
+}
+
+function toggleTheme() {
+  store.dispatch('toggleTheme')
 }
 
 const links = [
@@ -58,13 +66,31 @@ const filmCount = computed(() => store.getters.libraryCount)
 
       <div class="account">
         <span class="count">{{ filmCount }} {{ filmCount > 1 ? 'films' : 'film' }}</span>
+        <button
+            class="theme-toggle"
+            :aria-label="isDarkMode ? 'Activer le mode clair' : 'Activer le mode sombre'"
+            :title="isDarkMode ? 'Mode clair' : 'Mode sombre'"
+            @click="toggleTheme"
+        >
+          <span aria-hidden="true">{{ isDarkMode ? '☀' : '☾' }}</span>
+        </button>
         <template v-if="currentUser">
           <span class="user">{{ currentUser }}</span>
-          <button class="logout" @click="logout">Déconnexion</button>
+          <button class="logout" @click="showLogoutModal = true">Déconnexion</button>
         </template>
         <RouterLink v-else to="/connexion" class="login">Connexion</RouterLink>
       </div>
     </div>
+
+    <ConfirmModal
+        :open="showLogoutModal"
+        title="Déconnexion"
+        message="Êtes-vous sûr de vouloir vous déconnecter ?"
+        confirm-label="Se déconnecter"
+        cancel-label="Annuler"
+        @confirm="confirmLogout"
+        @cancel="showLogoutModal = false"
+    />
   </header>
 </template>
 
@@ -186,6 +212,22 @@ a {
   cursor: pointer;
 }
 
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--bordeaux);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--bordeaux);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
 @media (max-width: 1000px) {
   .navbar {
     padding: 16px;
@@ -227,6 +269,10 @@ a {
   .account {
     width: 100%;
     padding-top: 4px;
+  }
+
+  .theme-toggle {
+    margin-left: auto;
   }
 
   .burger span {

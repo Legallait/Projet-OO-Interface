@@ -1,7 +1,8 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import ConfirmModal from './ConfirmModal.vue'
 
 const props = defineProps({
   film: { type: Object, required: true },
@@ -11,14 +12,20 @@ const store = useStore()
 const router = useRouter()
 
 const saved = computed(() => Boolean(store.getters.getFilm(props.film.id)))
+const showRemoveModal = ref(false)
 
 function toggleLibrary() {
   if (!store.state.currentUser) {
     router.push('/connexion')
     return
   }
-  if (saved.value) store.dispatch('removeFilm', props.film.id)
+  if (saved.value) showRemoveModal.value = true
   else store.dispatch('setFilmStatus', { film: props.film, status: 'toWatch' })
+}
+
+function confirmRemove() {
+  showRemoveModal.value = false
+  store.dispatch('removeFilm', props.film.id)
 }
 </script>
 
@@ -51,6 +58,16 @@ function toggleLibrary() {
       <svg v-else viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
       <span>{{ saved ? 'Ajouté' : 'Ajouter' }}</span>
     </button>
+
+    <ConfirmModal
+      :open="showRemoveModal"
+      title="Retirer ce film"
+      :message="`Êtes-vous sûr de vouloir retirer « ${film.title} » de votre bibliothèque ?`"
+      confirm-label="Retirer"
+      cancel-label="Annuler"
+      @confirm="confirmRemove"
+      @cancel="showRemoveModal = false"
+    />
   </article>
 </template>
 

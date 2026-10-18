@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 const USERS_KEY = import.meta.env.VITE_USERS_KEY
 const SESSION_KEY = import.meta.env.VITE_SESSION_KEY
 const LIBRARY_KEY = import.meta.env.VITE_LIBRARY_KEY
+const THEME_KEY = 'cineclic-theme'
 
 // Une bibliothèque par compte : cineclic-library-<nom d'utilisateur>
 function loadLibrary(username) {
@@ -25,6 +26,7 @@ export default createStore({
   state: {
     users: JSON.parse(localStorage.getItem(USERS_KEY)) || [],
     currentUser: localStorage.getItem(SESSION_KEY),
+    theme: localStorage.getItem(THEME_KEY) === 'dark' ? 'dark' : 'light',
 
     library: loadLibrary(localStorage.getItem(SESSION_KEY)),
   },
@@ -66,6 +68,10 @@ export default createStore({
       if (username) localStorage.setItem(SESSION_KEY, username)
       else localStorage.removeItem(SESSION_KEY)
     },
+    toggleTheme(state) {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark'
+      localStorage.setItem(THEME_KEY, state.theme)
+    },
   },
 
   actions: {
@@ -87,6 +93,10 @@ export default createStore({
 
     logout({ commit }) {
       commit('setCurrentUser', null)
+    },
+
+    toggleTheme({ commit }) {
+      commit('toggleTheme')
     },
 
     setFilmStatus({ getters, commit }, { film, status }) {

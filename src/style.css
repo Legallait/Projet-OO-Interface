@@ -2,9 +2,30 @@
   --bordeaux: #6b1c2e;
   --gold: #d4a017;
   --cream: #f4ecdf;
+  --surface: #ffffff;
+  --text: #2a1a1e;
+  --muted: #6b5a5a;
+  --footer-bg: #6b1c2e;
 
   --display: 'Cinzel', Georgia, serif;
   --sans: 'Source Sans 3', system-ui, sans-serif;
+}
+
+:root[data-theme='dark'] {
+  --bordeaux: #e05f7d;
+  --gold: #e7bd5a;
+  --cream: #20242a;
+  --surface: #2d3239;
+  --text: #f4ecdf;
+  --muted: #c9bfc1;
+  --footer-bg: #e05f7d;
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] body {
+  background:
+    linear-gradient(rgba(32, 36, 42, 0.62), rgba(32, 36, 42, 0.62)),
+    url('./assets/background.webp') center / cover fixed;
 }
 
 * {
@@ -14,7 +35,7 @@
 body {
   margin: 0;
   background: var(--cream) url('./assets/background.webp') center / cover fixed;
-  color: #2a1a1e;
+  color: var(--text);
   font-family: var(--sans);
 }
 

@@ -81,7 +81,7 @@ function search() {
   gap: 16px;
   padding: 44px 24px;
   border-inline: 2px solid var(--bordeaux);
-  background: white;
+  background: var(--surface);
 }
 
 .bar::before,
@@ -148,7 +148,7 @@ button {
   padding: 0;
   border: 1px solid var(--bordeaux);
   border-radius: 4px;
-  background: white;
+  background: var(--surface);
   list-style: none;
   text-align: left;
 }

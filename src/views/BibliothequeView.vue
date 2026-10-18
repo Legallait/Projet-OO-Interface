@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
+import ConfirmModal from '../components/ConfirmModal.vue'
 
 const route = useRoute()
 const store = useStore()
@@ -34,6 +35,26 @@ const SORTS = {
 const search = ref('')
 const sort = ref('recent')
 
+// Action en attente de confirmation : { type: 'unfavorite' | 'delete', film }
+const pending = ref(null)
+
+const modal = computed(() => {
+  if (!pending.value) return null
+  const title = pending.value.film.title
+  if (pending.value.type === 'unfavorite') {
+    return {
+      title: 'Retirer des favoris',
+      message: `Êtes-vous sûr de vouloir retirer « ${title} » de vos favoris ?`,
+      confirmLabel: 'Retirer',
+    }
+  }
+  return {
+    title: 'Supprimer ce film',
+    message: `Êtes-vous sûr de vouloir supprimer « ${title} » de votre bibliothèque ?`,
+    confirmLabel: 'Supprimer',
+  }
+})
+
 const filtered = computed(() => {
   if (route.name === 'favoris') return store.getters.favorites
   if (route.query.filtre === 'a-voir') return store.getters.toWatch
@@ -43,7 +64,7 @@ const filtered = computed(() => {
 
 // "Écran" -> "ecran" : la recherche ignore les accents et la casse
 function normalize(text) {
-  return (text || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+  return (text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
 }
 
 // La bibliothèque est rangée dans l'ordre d'ajout : sa position sert de date d'ajout
@@ -62,6 +83,23 @@ function isActive(tab) {
 function toggleWatched(film) {
   const status = film.status === 'watched' ? 'toWatch' : 'watched'
   store.dispatch('setFilmStatus', { film, status })
+}
+
+// Ajouter aux favoris : direct. Retirer des favoris : confirmation.
+function onFavorite(film) {
+  if (film.favorite) pending.value = { type: 'unfavorite', film }
+  else store.dispatch('toggleFavorite', film)
+}
+
+function onDelete(film) {
+  pending.value = { type: 'delete', film }
+}
+
+function confirmPending() {
+  const { type, film } = pending.value
+  pending.value = null
+  if (type === 'unfavorite') store.dispatch('toggleFavorite', film)
+  else store.dispatch('removeFilm', film.id)
 }
 </script>
 
@@ -144,17 +182,27 @@ function toggleWatched(film) {
             <button
               :class="{ on: film.favorite }"
               :title="film.favorite ? 'Retirer des favoris' : 'Ajouter aux favoris'"
-              @click="store.dispatch('toggleFavorite', film)"
+              @click="onFavorite(film)"
             >
               <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z" /></svg>
             </button>
-            <button class="delete" title="Supprimer" @click="store.dispatch('removeFilm', film.id)">
+            <button class="delete" title="Supprimer" @click="onDelete(film)">
               <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" /></svg>
             </button>
           </div>
         </article>
       </div>
     </section>
+
+    <ConfirmModal
+      :open="Boolean(pending)"
+      :title="modal?.title"
+      :message="modal?.message"
+      :confirm-label="modal?.confirmLabel"
+      cancel-label="Annuler"
+      @confirm="confirmPending"
+      @cancel="pending = null"
+    />
   </template>
 </template>
 
@@ -302,8 +350,8 @@ h1 {
   padding: 8px 12px;
   border: 1px solid var(--bordeaux);
   border-radius: 4px;
-  background: white;
-  color: #2a1a1e;
+  background: var(--surface);
+  color: var(--text);
   font: inherit;
   font-size: 0.9rem;
 }
