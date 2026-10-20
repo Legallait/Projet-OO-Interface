@@ -19,6 +19,9 @@ const title = computed(() => {
   return GENRES.find((g) => g.id === Number(route.query.genre))?.label || ''
 })
 
+// Easter egg : une recherche sans résultat sur Gollum le fait apparaître
+const isGollumSearch = computed(() => /gollum|smeagol|sméagol|gouloum|pr[eé]cieux/i.test(route.query.q || ''))
+
 function browseGenre(genreId) {
   router.push({path: '/resultats', query: {genre: genreId}})
 }
@@ -82,7 +85,8 @@ watch(() => route.query, load, {immediate: true})
     <p v-if="loading">Chargement…</p>
     <p v-else-if="error && !films.length" class="error">{{ error }}</p>
     <div v-else-if="!films.length" class="no-results">
-      <p class="no-results-title">Aucun film trouvé</p>
+      <img v-if="isGollumSearch" class="gollum" src="../assets/gouloum.webp" alt="Gollum"/>
+      <p class="no-results-title">{{ isGollumSearch ? 'Il nous l\'a volé, le film !' : 'Aucun film trouvé' }}</p>
       <p>Vérifiez l'orthographe ou essayez un autre titre, ou parcourez les genres ci-dessus.</p>
     </div>
     <p v-else>{{ films.length }} films affichés</p>
@@ -160,6 +164,12 @@ h2 {
   border-radius: 8px;
   background: rgba(244, 236, 223, 0.85);
   font-family: var(--sans);
+}
+
+.no-results .gollum {
+  width: 100%;
+  margin-bottom: 16px;
+  border-radius: 6px;
 }
 
 .no-results p {

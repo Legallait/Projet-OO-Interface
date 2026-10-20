@@ -1,9 +1,9 @@
 <div align="center">
 
-# CinéClic : Projet OO Systems Development
-<img src="./src/assets/logo.png" alt="One More Time" width="240" />
+# Mon Précieux : Projet OO Systems Development
+<img src="./src/assets/anneau.svg" alt="Mon Précieux" width="240" />
 
-CinéClic est une application Vue.js pour rechercher des films et construire sa bibliothèque personnelle :
+Mon Précieux est une application Vue.js pour rechercher des films et construire sa bibliothèque personnelle :
 films à voir, films vus et favoris, sauvegardés dans le navigateur.
 
 

@@ -32,13 +32,25 @@ const links = [
 ]
 
 const filmCount = computed(() => store.getters.libraryCount)
+
+// Easter egg : trois clics rapides sur l'anneau réveillent Gollum
+let ringClicks = []
+
+function onRingClick() {
+  const now = Date.now()
+  ringClicks = [...ringClicks.filter((time) => now - time < 1000), now]
+  if (ringClicks.length >= 3) {
+    ringClicks = []
+    window.dispatchEvent(new CustomEvent('gollum', {detail: 'Rends-le nous ! Notre anneau !'}))
+  }
+}
 </script>
 
 <template>
   <header class="navbar">
     <RouterLink to="/" class="brand">
-      <img class="logo" src="../assets/logo.png" alt="logo"/>
-      CinéClic
+      <img class="logo" src="../assets/anneau.svg" alt="Anneau unique" @click="onRingClick"/>
+      Mon Précieux
     </RouterLink>
 
     <button

@@ -12,8 +12,8 @@ function browseGenre(genreId) {
 
 <template>
   <section class="hero">
-    <p class="kicker">Votre cabinet de curiosités</p>
-    <h1>CinéClic</h1>
+    <p class="kicker" title="Un film pour les gouverner tous">Votre cabinet de curiosités</p>
+    <h1>Mon Précieux</h1>
     <p class="intro">
       Répertoriez, annotez et classez vos pépites cinématographiques.
     </p>

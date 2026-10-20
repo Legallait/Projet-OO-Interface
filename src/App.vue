@@ -3,6 +3,7 @@ import { watch } from 'vue'
 import { useStore } from 'vuex'
 import NavBar from './components/NavBar.vue'
 import AppFooter from './components/AppFooter.vue'
+import GollumPeek from './components/GollumPeek.vue'
 
 const store = useStore()
 
@@ -21,4 +22,5 @@ watch(
     <RouterView />
   </main>
   <AppFooter />
+  <GollumPeek />
 </template>

@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="content">
       <div class="about">
-        <h2>CinéClic</h2>
+        <h2>Mon Précieux</h2>
         <p>
           Votre cinémathèque de poche, libre et instantanée. Collectionnez, organisez et explorez vos
           œuvres préférées directement dans votre navigateur.
@@ -25,7 +25,10 @@
 
       <div class="credits">
         <span class="tickets">Billets sans contact</span>
-        <span>CinéClic © 2026 </span>
+        <span class="copyright">
+          Mon Précieux © 2026
+          <img class="peek" src="../assets/gouloum.webp" alt="" aria-hidden="true"/>
+        </span>
       </div>
     </div>
   </footer>
@@ -120,6 +123,28 @@ a:hover {
   font-family: var(--display);
   text-transform: uppercase;
   color: var(--gold);
+}
+
+/* Easter egg : Gollum guette derrière le copyright au survol */
+.copyright {
+  position: relative;
+}
+
+.peek {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  width: 140px;
+  border-radius: 50% 50% 0 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+
+.copyright:hover .peek {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @media (max-width: 700px) {
