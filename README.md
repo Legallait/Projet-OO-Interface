@@ -123,7 +123,7 @@ src/
 
 ## Figma
 
-Prototype : https://www.figma.com/design/1hUiMPfeDv402sT5XZB65O/Projet-OO?node-id=0-1&t=QJ7QtWxUWJkwyQmy-1
+Prototype : https://www.figma.com/design/1hUiMPfeDv402sT5XZB65O/Projet-OO?node-id=0-1&p=f&t=pYnoA7eAFswcHPpO-0
 
 ## Auteurs
 
