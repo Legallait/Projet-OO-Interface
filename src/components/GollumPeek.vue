@@ -36,7 +36,7 @@ function onGollum(event) {
 onMounted(() => {
   window.addEventListener('keydown', onKey)
   window.addEventListener('gollum', onGollum)
-  console.log('%cMon précieux… 💍', 'color:#d4a017;font-size:16px;font-family:serif')
+  console.log('%cMon précieux… ', 'color:#d4a017;font-size:16px;font-family:serif')
   console.log('Psst… tapez « precieux » n\'importe où sur la page.')
 })
 
